@@ -11,4 +11,3 @@ Output files:
 * `SamplePreprocessedData.mat` - preprocessed dataset of 12 faces, for toy training.
 * `result_face_mono.mat` - Final model performance statistics after training.
 * `theta_result_after_face_expert_training.mat` - Unit activations, after finishing training.
-* 
