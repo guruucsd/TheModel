@@ -1,7 +1,7 @@
 function []=HiddenUnitsVisualization()
 
 %   HiddenUnitsVisualization()
-%   Sample code of visualizing the hidden unit activations (PC projection)
+%   Sample code of visualizing the net input of hidden unit activations (PC projection)
 %   in two-stage mixed-expert network training. In this code, the
 %   visualization only involves two object categories and 20 output nodes
 %   (10 each). 12 training images, 4 testing images per individual.
@@ -37,6 +37,7 @@ for indexPreprocessedData=1:length(preprocessedData)
     end
 end
 
+pcStart=2;
 xlimNum=20;
 
 figure;
@@ -64,7 +65,7 @@ for indexIter=1:length(para.nIterNewExpertSet)
         display(['nIterNewExpert=' num2str(nIterNewExpert) ' numHidden=' num2str(numHidden) ...
             ' testPerformanceFace=' num2str(testPerformanceFace) ' testPerformanceNewExpert=' num2str(testPerformanceNewExpert)]);
 
-        %% Visualize the hidden units activation.
+        %% Visualize the net input of hidden units activation.
         hiddenActivationAllMatrix=arrayfun(@(x) x.hidden_activation_PCA, [hiddenActivationAll{:}], 'UniformOutput', false);
         hiddenActivationAllMatrix=cell2mat(hiddenActivationAllMatrix);
 
@@ -75,16 +76,16 @@ for indexIter=1:length(para.nIterNewExpertSet)
         [U S PC]=svd(Y);
 
 
-        %% Projection and plot
+        %% PC Projection of net input of hidden unit activations and plot
         totalSubPlots=size(hiddenActivationAll,2);
         for pcanum=1:totalSubPlots
             eachQuantity(pcanum)=size(hiddenActivationAll{pcanum}.hidden_activation_PCA,2);
             if pcanum<=2
-            PC_proj{indexIter,pcanum}(:,:)=PC(:,2:3)'*hiddenActivationAllMatrixSub(:,eachQuantity(pcanum)*(pcanum-1)+1:eachQuantity(pcanum)*pcanum);
+            PC_proj{indexIter,pcanum}(:,:)=PC(:,pcStart:pcStart+1)'*hiddenActivationAllMatrixSub(:,eachQuantity(pcanum)*(pcanum-1)+1:eachQuantity(pcanum)*pcanum);
             else
-                index=find(hiddenActivationAll{1,pcanum}.nodeid_PCA>10);%find the index of non-face experts in non-face expert training with faces
+                index=find(hiddenActivationAll{1,pcanum}.nodeid_PCA>10);%find the index of non-face experts
                 index=index+eachQuantity(pcanum)*(pcanum-2);
-                PC_proj{indexIter,pcanum}(:,:)=PC(:,2:3)'*hiddenActivationAllMatrixSub(:,index);   
+                PC_proj{indexIter,pcanum}(:,:)=PC(:,pcStart:pcStart+1)'*hiddenActivationAllMatrixSub(:,index);   
             end
 
             subplot(2,totalSubPlots,(indexIter-1)*totalSubPlots+pcanum);

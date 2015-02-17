@@ -1,7 +1,7 @@
 function [theta_out_DATASET testPerformanceResult testPerformanceFaceInExpertResult hidden_activation_PCA_all]=NetworkTrainingNewExpertCottrellSuggest(allExpertData, newExpertName, numHidden,nIterNewExpert,weightFaceExpertNetwork)
 
 %   [theta_out_DATASET testPerformanceResult hidden_activation_PCA_all]=NetworkTrainingNewExpert(allExpertData, newExpertName, numHidden,nIterNewExpert,weightFaceExpertNetwork)
-%   Network training for face and nonface categories. 
+%   Network training for both face and non-face categories. 
 %
 %   Parameters:
 %   Input:

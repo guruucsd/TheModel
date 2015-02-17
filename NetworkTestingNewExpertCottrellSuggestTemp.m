@@ -1,5 +1,7 @@
 function [ave_acc_train_expert ave_acc_train_face_in_expert ave_acc_test_expert ave_acc_test_face_in_expert  mean_error_trainingset mean_error_testset]=NetworkTestingNewExpertCottrellSuggestTemp(epoch,allExpertData,newExpertName,theta,numHidden)
 
+%   Measure the object recognition accuracy on both training and test set.
+%   Author: Panqu Wang
 
 for indexPreprocessedData=1:length(allExpertData)
     name=allExpertData(indexPreprocessedData).name;
@@ -28,6 +30,8 @@ num_hidden=numHidden;
 num_hidden_face=numHidden;
 
 [W_in_hd1 W_hd_op1]=GetParameterMonoNetwork(theta,input_size,num_output,num_train,num_hidden);
+
+
 %test set, for each class
 accuracy_test=zeros(size(testSetNewExpert,2)+size(testSetFaceExpert,2),1);
 inaccuracy_test=zeros(size(testSetNewExpert,2)+size(testSetFaceExpert,2),1);

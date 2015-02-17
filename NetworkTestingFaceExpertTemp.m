@@ -1,5 +1,8 @@
 function [ave_acc_train_expert ave_acc_test_expert  mean_error_trainingset mean_error_testset]=NetworkTestingFaceExpertTemp(epoch,faceData,theta,numHidden)
 
+%   Measure the face recognition accuracy on both training and test set.
+%   Author: Panqu Wang
+
 trainingSet=faceData.trainingSet(1:end);
 testSet=faceData.testSet(1:end);
 
