@@ -100,7 +100,7 @@ while error_avg>threshold & epoch<=nIterFace
         theta_old=theta;
         theta=theta_new;
     end
-    save('theta_temp','theta');
+%     save('theta_temp','theta');
 
     % uncomment this to get the time vs nodes value figure
     % record the performance (accuracy) and error vs. training epochs.
@@ -117,7 +117,7 @@ theta_out_DATASET=theta;
     
 testPerformanceResult=mean(ave_acc_test(end),1);
 
-save('theta_result_after_face_expert_training','theta_out_DATASET')
-save('result_face_mono','ave_acc_train','ave_acc_test','mean_error_trainingset','mean_error_testset')
+% save('theta_result_after_face_expert_training','theta_out_DATASET')
+% save('result_face_mono','ave_acc_train','ave_acc_test','mean_error_trainingset','mean_error_testset')
 
 end

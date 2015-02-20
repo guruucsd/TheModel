@@ -7,7 +7,7 @@ function [] = PreprocessDataSet()
 %   12 training images, 4 testing images per individual.
 
 
-%% Finding location of data set.
+% Finding location of data set.
 loc=['./SampleDataSet'];
 cd(loc);
 objectparent=dir(pwd);

@@ -133,7 +133,7 @@ while error_avg>threshold & epoch<=nIterNewExpert
         theta_old=theta;
         theta=theta_new;
     end
-    save('theta_temp','theta');
+%     save('theta_temp','theta');
 
     % record the performance (accuracy) and error vs. training epochs.
     if mod(epoch,1)==0
@@ -151,8 +151,8 @@ testPerformanceResult=mean(ave_acc_test(end),1);
 testPerformanceFaceInExpertResult=mean(ave_acc_test_face_in_expert(end),1);
 
 
-save('theta_result_after_new_expert_training','theta_out_DATASET')
-save('result_expert_mono','ave_acc_train','ave_acc_train_face_in_expert','ave_acc_test','ave_acc_test_face_in_expert','mean_error_trainingset','mean_error_testset')
+% save('theta_result_after_new_expert_training','theta_out_DATASET')
+% save('result_expert_mono','ave_acc_train','ave_acc_train_face_in_expert','ave_acc_test','ave_acc_test_face_in_expert','mean_error_trainingset','mean_error_testset')
 
 
 end

@@ -75,7 +75,7 @@ while error_avg>threshold & epoch<=nIterFace
         theta_old=theta;
         theta=theta_new;
     end
-    save('theta_temp','theta');
+%     save('theta_temp','theta');
 
     % record the performance (accuracy) and error vs. training epochs.
     if mod(epoch,1)==0
