@@ -5,7 +5,7 @@ To run:
 
 RunExperiment.m - train a network with the SamplePreprocessedData.mat file.
 PreprocessDataSet.m - (re)create SamplePreprocessedData.mat file.
-HiddenUnitsVisualization.m - 
+HiddenUnitsVisualization.m - Visualizing the (net input of) hidden unit activation of two different networks, for comparison reason.
 
 
 Output files:
