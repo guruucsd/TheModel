@@ -68,7 +68,7 @@ for objectname=3:length(objectparent)
                             gabor(ii+size_gb,j+size_gb,orientation)=carrier(ii+size_gb,j+size_gb)*envelop(ii+size_gb,j+size_gb);
                         end
                     end
-%                     imshow(gabor(:,:,orientation),[])
+%                     subplot(2,4,orientation); imshow(gabor(:,:,orientation),[]);
                     f_filtered{scale}(:,:,orientation)=imfilter(f,gabor(:,:,orientation),'replicate','conv');       
 %                     imshow(f_filtered{scale}(:,:,orientation),[])
                 end
