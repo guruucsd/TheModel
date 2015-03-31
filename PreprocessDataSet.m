@@ -115,6 +115,10 @@ for objectname=3:length(objectparent)
         %normal
         f_PCA_scale_normal=zscore(vector_ori(:,:,scales)'*mean_subst(:,:,scales));
         f_PCA_scale_test_normal=zscore(vector_ori(:,:,scales)'*mean_subst_test(:,:,scales));
+        
+%         f_PCA_scale_normal=(vector_ori(:,:,scales)'*mean_subst(:,:,scales));
+%         f_PCA_scale_test_normal=(vector_ori(:,:,scales)'*mean_subst_test(:,:,scales));        
+        
         f_PCA_temp_normal((scales-1)*num_pca+1:scales*num_pca,:)=f_PCA_scale_normal;
         f_PCA_test_temp_normal((scales-1)*num_pca+1:scales*num_pca,:)=f_PCA_scale_test_normal;
       

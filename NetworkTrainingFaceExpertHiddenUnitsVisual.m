@@ -1,7 +1,11 @@
-function [theta_out_DATASET testPerformanceResult hidden_activation_PCA_all]=NetworkTrainingFaceExpertHiddenUnits(faceData, numHidden,nIterFace)
+function [theta_out_DATASET testPerformanceResult hidden_activation_PCA_all]=NetworkTrainingFaceExpertHiddenUnitsVisual(faceData, numHidden,nIterFace)
 
 %   [theta_out_DATASET testPerformanceResult hidden_activation_PCA_all]=NetworkTrainingFaceExpertHiddenUnits(faceData, numHidden,nIterFace)
 %   Network training for faces. 
+%   
+%   This function is used for visualizing hidden units activation through
+%   training. If you just want training without visualizing, then use
+%   NetworkTrainingFaceExpert.m
 %
 %   Parameters:
 %   Input:

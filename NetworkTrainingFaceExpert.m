@@ -2,6 +2,11 @@ function [theta_out_DATASET testPerformanceResult]=NetworkTrainingFaceExpert(fac
 
 %   [theta_out_DATASET testPerformanceResult]=NetworkTrainingFaceExpert(faceData, numHidden,nIterFace)
 %   Network training for faces. 
+%
+%   This function is used for training a network for recognizing individual faces.
+%   If you want visualizing hidden units activation through
+%   training, then use NetworkTrainingFaceExpertHiddenUnitsVisual.m
+%
 %   Author: Panqu Wang
 %   This is only a toy version. Do not distribute without permission.
 %   Parameters:
