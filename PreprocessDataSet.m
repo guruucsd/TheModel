@@ -4,7 +4,6 @@ function [] = PreprocessDataSet()
 %   Training and test set assembly for training TM ("The Model", Dailey and Cottrell (1999))
 %   Author: Panqu Wang
 %   This is only a toy version. Do not distribute without permission.
-%   12 training images, 4 testing images per individual.
 
 
 % Finding location of data set.
@@ -20,6 +19,7 @@ for objectname=3:length(objectparent)
     
     num_each=16;
     num_test=4;
+    test_list=randperm(num_each,num_test);
     total_num=(length(object)-2)*num_each;
     total_train=(length(object)-2)*(num_each-num_test);
     total_test=(length(object)-2)*(num_test);
@@ -40,6 +40,7 @@ for objectname=3:length(objectparent)
 
         %% for each image in given subject, do gabor_filtering
         trainIndex=1;
+        testIndex=1;
         for current_number=1:num_each
             f=imread(subject(order{i-2}(current_number)+2).name);
             if size(size(f),2)==2
@@ -84,8 +85,9 @@ for objectname=3:length(objectparent)
             end      
             
             %testset and trainingset assembly
-            if mod(current_number,4)==0
-                f_filtered_normalized_dwsp_vector_allsub_test(:,(i-3)*num_test+(current_number)/4)=f_filtered_normalized_dwsp_vector(:,current_number);
+            if ismember(current_number,test_list)
+                f_filtered_normalized_dwsp_vector_allsub_test(:,(i-3)*num_test+testIndex)=f_filtered_normalized_dwsp_vector(:,current_number);
+                testIndex=testIndex+1;
             else
                 f_filtered_normalized_dwsp_vector_allsub_train(:,(i-3)*(num_each-num_test)+trainIndex)=f_filtered_normalized_dwsp_vector(:,current_number);
                 trainIndex=trainIndex+1;
@@ -135,7 +137,7 @@ for objectname=3:length(objectparent)
     cd ..
 end
     display 'finished.'
-    save(['../SamplePreprocessedData.mat'],'preprocessedData')
+    save(['../PreprocessedData.mat'],'preprocessedData')
     cd ../..
 end
 

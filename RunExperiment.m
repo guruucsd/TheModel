@@ -9,7 +9,8 @@ function []=RunExperiment()
 
 
 close all; clear all; clc;
-load SamplePreprocessedData % get preprocessedData (12+4 each)
+% load SamplePreprocessedData % get preprocessedData (12+4 each)
+load PreprocessedData
 
 % find index of faces (not necessary in this sample code)
 for indexPreprocessedData=1:length(preprocessedData)
