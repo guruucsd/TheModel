@@ -77,7 +77,10 @@ for objectname=3:length(objectparent)
                 %now we have 8 orientations for each scale, downsample and do normalization
                 for orientation=1:size(phi,2)
                    f_filtered_dwsp{scale}(:,:,orientation)=imresize(f_filtered{scale}(:,:,orientation),[dwsp dwsp]);
+                end
+                for orientation=1:size(phi,2)
                    f_filtered_normalized_dwsp{scale}(:,:,orientation)=abs(f_filtered_dwsp{scale}(:,:,orientation))./sum(abs(f_filtered_dwsp{scale}),3);               
+
                 end
             end
             for scale=1:size(k,2);
@@ -138,6 +141,6 @@ for objectname=3:length(objectparent)
 end
     display 'finished.'
     save(['../PreprocessedData.mat'],'preprocessedData')
-    cd ../..
+    cd ..
 end
 

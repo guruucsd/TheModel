@@ -22,7 +22,7 @@ end
         
 
 % Train the face expert network
-nIterFace=20;
+nIterFace=1000;
 numHidden=4;
 [weightFaceExpertNetwork testPerformanceFace]=NetworkTrainingFaceExpert(preprocessedData(faceDataIndex),numHidden,nIterFace);           
 
