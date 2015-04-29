@@ -94,6 +94,17 @@ while error_avg>threshold & epoch<=nIterFace
 end
 theta_out_DATASET=theta;
 
+figure; 
+subplot(1,2,1)
+plot(ave_acc_train,'r-','LineWidth',2);hold on;
+plot(ave_acc_test,'b--','LineWidth',2);
+legend('training accuracy','testing accuracy')
+
+subplot(1,2,2)
+plot(mean_error_trainingset,'r-','LineWidth',2);hold on;
+plot(mean_error_testset,'b--','LineWidth',2);
+legend('training error','testing error')
+
 testPerformanceResult=mean(ave_acc_test(end),1);
 
 save('theta_result_after_face_expert_training','theta_out_DATASET')

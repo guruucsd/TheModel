@@ -5,7 +5,7 @@ function [] = PreprocessDataSet()
 %   Author: Panqu Wang
 %   This is only a toy version. Do not distribute without permission.
 
-
+ 
 % Finding location of data set.
 loc=['./SampleDataSet'];
 cd(loc);
@@ -69,7 +69,7 @@ for objectname=3:length(objectparent)
                             gabor(ii+size_gb,j+size_gb,orientation)=carrier(ii+size_gb,j+size_gb)*envelop(ii+size_gb,j+size_gb);
                         end
                     end
-%                     subplot(2,4,orientation); imshow(gabor(:,:,orientation),[]);
+%                      subplot(2,4,orientation); imshow(gabor(:,:,orientation),[]);
                     f_filtered{scale}(:,:,orientation)=imfilter(f,gabor(:,:,orientation),'replicate','conv');       
 %                     imshow(f_filtered{scale}(:,:,orientation),[])
                 end

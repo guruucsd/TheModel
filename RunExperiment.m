@@ -22,8 +22,8 @@ end
         
 
 % Train the face expert network
-nIterFace=1000;
-numHidden=4;
+nIterFace=100;
+numHidden=8;
 [weightFaceExpertNetwork testPerformanceFace]=NetworkTrainingFaceExpert(preprocessedData(faceDataIndex),numHidden,nIterFace);           
 
 display(['Expert Network Training Finished. Test Performance on faces=' num2str(testPerformanceFace)]);
