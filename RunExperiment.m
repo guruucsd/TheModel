@@ -24,7 +24,10 @@ end
 % Train the face expert network
 nIterFace=100;
 numHidden=8;
-[weightFaceExpertNetwork testPerformanceFace]=NetworkTrainingFaceExpert(preprocessedData(faceDataIndex),numHidden,nIterFace);           
+learning_rate=0.015; % learning rate
+error_threshold=0.005; % threshold for errors
+momentum=0.01;
+[weightFaceExpertNetwork testPerformanceFace]=NetworkTrainingFaceExpert(preprocessedData(faceDataIndex),numHidden,nIterFace,learning_rate,error_threshold, momentum);           
 
 display(['Expert Network Training Finished. Test Performance on faces=' num2str(testPerformanceFace)]);
 

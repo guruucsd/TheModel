@@ -1,4 +1,4 @@
-function [theta_out_DATASET testPerformanceResult]=NetworkTrainingFaceExpert(faceData, numHidden,nIterFace)
+function [theta_out_DATASET testPerformanceResult]=NetworkTrainingFaceExpert(faceData, numHidden,nIterFace, lambda, threshold, momentum)
 
 %   [theta_out_DATASET testPerformanceResult]=NetworkTrainingFaceExpert(faceData, numHidden,nIterFace)
 %   Network training for faces. 
@@ -13,7 +13,10 @@ function [theta_out_DATASET testPerformanceResult]=NetworkTrainingFaceExpert(fac
 %   Input:
 %   faceData:   training set and test set containing faces
 %   numHidden:  number of hidden units in the neural network
-%   nIterFace:  number of training iterations for face expert network.
+%   nIterFace:  number of training iterations for face expert network
+%   lambda:     learning rate
+%   threshold:  error threshold
+%   momentum:   momentum parameter in training
 %   Output:
 %   theta_out_DATASET:      weights (if further analysis needed)
 %   testPerformanceResult:  face recognition result on test set
@@ -35,9 +38,6 @@ W_hd_op1=-0.5+rand(num_output,num_hidden);
 
 theta = [W_in_hd1(:); W_hd_op1(:)];
 
-lambda=0.015; % learning rate
-threshold=0.005; % threshold for errors
-momentum=0.01;
 % mu=0.001; % regularization strength, not used here
 error_avg=1;
 epoch=1;
