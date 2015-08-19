@@ -18,10 +18,11 @@ for img = 1:numImages
     fprintf('    image %i out of %i \n', img, numImages);
     for s = 1:numScales
         for o = 1:numOrientations
-            filteredData{img,s,o} = abs(double(imresize(imfilter(data{img}, gabor{s,o}, 'replicate', 'conv'), [8,8])));
+            filteredData{img,s,o} = (abs(double(imresize(imfilter(data{img}, gabor{s,o}/256, 'replicate', 'conv'),[50,50])))/(64/(2^s)));
         end
     end
 end
+
 
 fprintf('    filtering complete. \n');
 %filteredData{i,s,o) refers to output feature map for image i from gabor of

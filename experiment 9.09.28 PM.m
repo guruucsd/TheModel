@@ -1,10 +1,10 @@
 function [] = experiment()
-clear all; close all;
+
 %% set up paths and network constants
 dataPath = '/Users/Davis/Desktop/garyComposite/dataset';
 dataType = '*.jpg';
-numIterations = 10;
-numHidden = 50;
+numIterations = 10000000;
+numHidden = 100;
 
 %% run experiment: preprocess data and train data.
 preprocessor(dataPath, dataType);

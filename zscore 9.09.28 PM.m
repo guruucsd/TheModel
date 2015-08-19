@@ -1,4 +1,4 @@
-function [trainNorm, testNorm, validNorm, mapMean, mapStd] = zscore(trainFeature, testFeature, validFeature)
+function [trainNorm, testNorm, validNorm] = zscore(trainFeature, testFeature, validFeature)
 %this code is to zscore across all feature maps
 %@version 1.0
 %@author Davis Liang
@@ -29,7 +29,7 @@ mapStd = mapSumSq/numImages - mapMean;
 
 %% subtract mean divide standard deviation
 for i = 1:numImages
-    for s = 1:numScales
+    for s = 1:numScales 
         for o = 1:numOrientations
             trainNorm{i,s,o} = (trainFeature{i,s,o}-mapMean)./mapStd;
             

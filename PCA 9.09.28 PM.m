@@ -5,6 +5,7 @@ function [PCATrainData, PCATestData, PCAValidData] = PCA(trainSet, testSet, vali
 fprintf('%s \n', message);
 
 %% first, reshape the data to have each column representing one image.
+
 numImagesTrain = size(trainSet,1);
 numImagesTest = size(testSet, 1);
 numImagesValid = size(validSet, 1);
@@ -15,6 +16,8 @@ numOrientations = size(trainSet,3);
 dataAllTrain = [];
 dataAllTest = [];
 dataAllValid = [];
+
+display('    reshaping training set...');
 
 for i = 1:numImagesTrain
     dataImTrain = [];
@@ -27,6 +30,8 @@ for i = 1:numImagesTrain
     dataAllTrain = [dataAllTrain,dataImTrain]; %each image corresponds to one column
 end
 
+display('    reshaping testing set...');
+
 for i = 1:numImagesTest
     dataImTest = [];
     for s = 1:numScales
@@ -38,6 +43,7 @@ for i = 1:numImagesTest
     dataAllTest = [dataAllTest,dataImTest]; %each image corresponds to one column
 end
 
+display('    reshaping validation set...');
 
 for i = 1:numImagesValid
 dataImValid = [];
@@ -55,31 +61,52 @@ end
 %each col is now an image. the matrix is now n-dataelements x m-images
 
 %% calculate the covariance matrix and find it's eigenvalues/vectors
-numPCA = 10;
+numPCA = 5;
 
-sigma = dataAllTrain*dataAllTrain'/numImagesTrain; %definition of covariance with zero mean.
-[eigenspace, eigenval, V] = svd(sigma); %we find the eigenspace and the eigenvalues
+
+display('    constructing covariance matrix...');
+sigma = dataAllTrain'*dataAllTrain/numImagesTrain; %definition of covariance with zero mean.
+display('    extracting eigendata...');
+[eigenspace_T, eigenval_T, V] = svd(sigma); %we find the eigenspace and the eigenvalues
+
+%transform eigenvalues and eigenspace back into non-transposed forms
+k = (size(dataAllTrain,2)-1)/(size(dataAllTrain,1)-1);
+eigenval  = (1/k)*eigenval_T;
+
+X = dataAllTrain/sqrt(2*k*eigenval);
+
+eigenspace = eigenspace_T*pinv(X);
+
 
 PCATrainData = [];
 PCATestData = [];
 PCAValidData = [];
 
+
+display('    extracting training set principle components...');
 for i = 1:numPCA
-    data_rot = eigenspace(:,i)' * dataAllTrain;
+    fprintf('        %i PC extracted \n', i);
+    data_rot = eigenspace(i,:)*dataAllTrain;
     PCATrainData = [PCATrainData; data_rot]; %check the dimensionality of this thing.
 end
-
+display('    extracting testing set principle components...');
 for i = 1:numPCA
-    data_rot = eigenspace(:,i)' * dataAllTest;
+    fprintf('        %i PC extracted \n', i);
+    data_rot = eigenspace(i,:)*dataAllTest;
     PCATestData = [PCATestData; data_rot]; %check the dimensionality of this thing.
 end
-
+display('    extracting validation set principle components...');
 for i = 1:numPCA
-    data_rot = eigenspace(:,i)' * dataAllValid;
+    fprintf('        %i PC extracted \n', i);
+    data_rot = eigenspace(i,:)*dataAllValid;
     PCAValidData = [PCAValidData; data_rot]; %check the dimensionality of this thing.
 end
 
 
+
+%PCATrainData = pca(dataAllTrain);
+%PCATestData = pca(dataAllTest);
+%PCAValidData = pca(dataAllValid);
 
 
 fprintf('    PCA extraction complete. \n');
