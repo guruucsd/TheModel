@@ -21,7 +21,7 @@ for i = 1:length(files)
     if size(predata_1,3) == 3
         predata_1 = rgb2gray(predata_1); %if we have RGB channels, greyscale it.
     end
-    predata_2 = imresize(predata_1, [128,128]); %resize to 256x256
+    predata_2 = imresize(predata_1, [256,256]); %resize to 256x256
     data{i} = predata_2;
 end
 

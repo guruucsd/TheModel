@@ -16,7 +16,7 @@ scale = zeros(1,numScales);
 orientation = zeros(1,numOrientations);
 
 for i=1:numScales
-    scale(i) = (2*pi/gaborSize)*2^(i);
+    scale(i) = (2*pi/gaborSize)*1.6^(i);
 end
 
 for i=1:numOrientations

@@ -61,13 +61,14 @@ end
 %each col is now an image. the matrix is now n-dataelements x m-images
 
 %% calculate the covariance matrix and find it's eigenvalues/vectors
-numPCA = 5;
+%{
+numPCA = 30;
 
 
 display('    constructing covariance matrix...');
 sigma = dataAllTrain'*dataAllTrain/numImagesTrain; %definition of covariance with zero mean.
 display('    extracting eigendata...');
-[eigenspace_T, eigenval_T, V] = svd(sigma); %we find the eigenspace and the eigenvalues
+[eigenspace_T, eigenval_T] = eig(sigma); %we find the eigenspace and the eigenvalues
 
 %transform eigenvalues and eigenspace back into non-transposed forms
 k = (size(dataAllTrain,2)-1)/(size(dataAllTrain,1)-1);
@@ -102,11 +103,17 @@ for i = 1:numPCA
     PCAValidData = [PCAValidData; data_rot]; %check the dimensionality of this thing.
 end
 
+%}
 
 
-%PCATrainData = pca(dataAllTrain);
-%PCATestData = pca(dataAllTest);
-%PCAValidData = pca(dataAllValid);
+
+dataAll = [dataAllTrain,dataAllTest];
+pcaDat = pca(dataAll)';
+
+
+PCATrainData = pcaDat(1:90,1:numImagesTrain);
+PCATestData = pcaDat(1:90,numImagesTrain+1:numImagesTrain+numImagesTest);
+PCAValidData = PCATrainData;
 
 
 fprintf('    PCA extraction complete. \n');

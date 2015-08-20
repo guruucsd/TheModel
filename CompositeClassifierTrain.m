@@ -1,4 +1,4 @@
-function[] = CompositeClassifierTrain(numIter, numhid)
+function[] = CompositeClassifierTrain(numIter)
 
 
 
@@ -11,14 +11,6 @@ validData = params.validPCA;
 validLabels = params.validLabels;
 testData = params.testPCA;
 testLabels = params.testLabels;
-
-
-maxDat = max(max(trainData));
-
-trainData = 2*(trainData/maxDat)-1;
-testData = 2*(testData/maxDat)-1;
-validData = 2*(validData/maxDat)-1;
-
 
 
 fprintf('setting up network... \n');
@@ -37,17 +29,18 @@ for i = 1:size(testLabels,2)
 end
 
 targlen = maxim;
+               
+weights = (normrnd(0,1/sqrt(inlen+1),[targlen,inlen+1]));  %randomized weight matrix for hidden layer to output layer
+learn = 0.0001;
 
-whi = (normrnd(0,1/sqrt(inlen+1),[numhid,inlen+1]));    %randomized weight matrix for input layer to hidden layer                 
-woh = (normrnd(0,1/sqrt(numhid+1),[targlen,numhid+1]));  %randomized weight matrix for hidden layer to output layer
-learnho = 0.0000025;
-learnih = 0.000005;
 a = .9;         %momentum constant
-dwoldh = 0;     %old weight change matrix for input to hidden units  
-dwoldo = 0;     %old weight change matrix for hidden to output units
+
+dwold = 0;     %old weight change matrix for hidden to output units
 
 run = true;
 epoch = 0;
+
+show = 100;
 %% Stochastic Gradient Descent Code
 
 Error = [];
@@ -69,7 +62,7 @@ while run
     validWrong = 0;
     testWrong = 0;
 
-    if(mod(epoch,100) ==0)
+    if(mod(epoch,show) ==0)
         fprintf('epoch %i... \n', epoch);
     end
     
@@ -81,45 +74,39 @@ while run
         targ(trainLabels{i}) = 1; %set up target
 
         %forward propagate function
-        neti = [whi*input];
-        hout = [1./(1+exp(-neti))];
-        hprime = hout.*(1-hout);
+
+        net = weights*input;
         
-        h_layer = [1; hout];
-        neto = woh*[h_layer];
-        
-        %out = [1./(1+exp(-neto))];
+        %out = [1./(1+exp(-net))];
         %oprime = out.*(1-out);
         
-        out = exp(neto)./sum(exp(neto));
+        out = exp(net)./sum(exp(net));
         oprime = 1;
-        
-        
-        
+  
         deltao = (targ - out).*oprime;
-        deltah = hprime.*(woh(:,2:numhid+1)'*deltao);
+
         
-        dwo = (deltao*[h_layer]') + dwoldo*a;
-        woh = woh + learnho.*(dwo );
+        dw = (deltao*input') + dwold*a;
+        weights = weights + learn.*(dw);
         
-        dwh = ((deltah)*input') + dwoldh*a;
-        whi = whi + learnih.*(dwh );
+        
+
+        dwold = dw;
         
         trainError = trainError + 0.5*sum((targ-out).^2)/numTrainImages; 
-
         
     end
     %% print training error
     Error = [Error, trainError];
-    if (mod(epoch,100) == 0)
+    if (mod(epoch,show) == 0)
         fprintf('    training error: %f \n', Error(epoch));
     end
     
     
     %% forward propagate and find out validation error
 
-    for i = randperm(numValidImages)
-        wrong = feedforwards(whi, woh, validData(:,i), validLabels{i});
+    for i = randperm(numValidImages)        
+        wrong = feedforwards(weights, validData(:,i), validLabels{i}, 0);
         validWrong = validWrong + wrong;
     end  
     
@@ -127,7 +114,7 @@ while run
     
     vpWrong = 100*(validWrong/numValidImages);
     ValidPercentWrong = [ValidPercentWrong, vpWrong];
-    if(mod(epoch,100) == 0)
+    if(mod(epoch,show) == 0)
         fprintf('    validation percent wrong: %%%f \n', ValidPercentWrong(epoch));
     end
     
@@ -135,7 +122,7 @@ while run
  %% forwad propagate and find out test error
 
     for i = randperm(numTestImages)
-        wrong = feedforwards(whi, woh, testData(:,i), testLabels{i});
+        wrong = feedforwards(weights, testData(:,i), testLabels{i}, 0);
         testWrong = testWrong + wrong;
     end
     
@@ -143,7 +130,7 @@ while run
     
     tpWrong = 100*(testWrong/numTestImages);
     TestPercentWrong = [TestPercentWrong, tpWrong];
-    if (mod(epoch,100) == 0)
+    if (mod(epoch,show) == 0)
         fprintf('    test percent wrong: %%%f \n', TestPercentWrong(epoch));
     end
     
