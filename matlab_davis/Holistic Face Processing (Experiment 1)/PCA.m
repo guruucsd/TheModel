@@ -68,7 +68,7 @@ dataAllValid = bsxfun(@minus,dataAllValid',avg);
 
 %% calculate the covariance matrix and find it's eigenvalues/vectors
 
-numPCA = 10;
+numPCA = 20;
 
 %Kohonen and Lowe Trick for small covariance matrix.
 display('    constructing covariance matrix...');
@@ -89,7 +89,6 @@ PCAValidData = [];
 
 % construct then normalize the eigenvectors.
 
-display('    extracting training set principle components...');
 data_rot_train = dataAllTrain*eigenspace;
 data_rot_valid = dataAllValid*eigenspace;
 data_rot_test = dataAllTest*eigenspace;
@@ -99,24 +98,10 @@ data_rot_train = data_rot_train/diag(snorm);
 data_rot_test = data_rot_test/diag(snorm);
 data_rot_valid = data_rot_valid/diag(snorm);
 
-
-for i = 1:numPCA
-    fprintf('        %i PC extracted \n', i);
-    PCATrainData = [PCATrainData; data_rot_train(i,:)]; %check the dimensionality of this thing.
-end
-
-display('    extracting testing set principle components...');
-for i = 1:numPCA
-    fprintf('        %i PC extracted \n', i);
-    PCATestData = [PCATestData; data_rot_test(i,:)]; %check the dimensionality of this thing.
-end
-
-display('    extracting validation set principle components...');
-for i = 1:numPCA
-    fprintf('        %i PC extracted \n', i);
-    PCAValidData = [PCAValidData; data_rot_valid(i,:)]; %check the dimensionality of this thing.
-end
-
+fprintf('     extracting principal components...')
+PCATrainData = data_rot_train(:,1:numPCA);
+PCAValidData = data_rot_valid(:,1:numPCA);
+PCATestData = data_rot_test(:,1:numPCA);
 
 
 

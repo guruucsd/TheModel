@@ -35,7 +35,7 @@ bias = ones(targlen,1)*0.5;                             %bias weight matrix
 learn = 0.0001;
 
 a = .9;         %momentum constant
-lambda = 0.1;   %weight decay constant
+lambda = 0.3;   %weight decay constant
 
 d_weights_old = 0;     %old weight change matrix for hidden to output units
 d_bias_old = 0;         
