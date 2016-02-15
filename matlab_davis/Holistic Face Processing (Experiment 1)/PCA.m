@@ -57,66 +57,69 @@ dataImValid = [];
 end
 
 
+%subtract out the mean for every image.
+inlen = size(dataAllTrain,1);
+avg = sum(dataAllTrain')/numImagesTrain; %average of each dimension
+dataAllTrain = bsxfun(@minus,dataAllTrain',avg);
+dataAllTest = bsxfun(@minus,dataAllTest',avg);
+dataAllValid = bsxfun(@minus,dataAllValid',avg);
 
-%each col is now an image. the matrix is now n-dataelements x m-images
+%n images m dimensions, nxm data matrix.
 
 %% calculate the covariance matrix and find it's eigenvalues/vectors
-%{
-numPCA = 50;
 
+numPCA = 20;
 
+%Kohonen and Lowe Trick for small covariance matrix.
 display('    constructing covariance matrix...');
-sigma = dataAllTrain'*dataAllTrain/numImagesTrain; %definition of covariance with zero mean.
+sigma = dataAllTrain*dataAllTrain'/(numImagesTrain-1); 
 display('    extracting eigendata...');
 [eigenspace_T, eigenval_T] = svd(sigma); %we find the eigenspace and the eigenvalues
 
 %transform eigenvalues and eigenspace back into non-transposed forms
-k = (size(dataAllTrain,2)-1)/(size(dataAllTrain,1)-1);
-eigenval  = (1/k)*eigenval_T;
-X = dataAllTrain/sqrt(2*k*eigenval);
-eigenspace = eigenspace_T*pinv(X);
+
+%normalize eigenspace
+eigenspace = dataAllTrain'*eigenspace_T;
+
 
 %get n PC's
 PCATrainData = [];
 PCATestData = [];
 PCAValidData = [];
 
+% construct then normalize the eigenvectors.
 
-display('    extracting training set principle components...');
-data_rot_train = eigenspace*dataAllTrain;
-data_rot_valid = eigenspace*dataAllValid;
-data_rot_test = eigenspace*dataAllTest;
+data_rot_train = dataAllTrain*eigenspace;
+data_rot_valid = dataAllValid*eigenspace;
+data_rot_test = dataAllTest*eigenspace;
 
-for i = 1:numPCA
-    fprintf('        %i PC extracted \n', i);
-    PCATrainData = [PCATrainData; data_rot_train(i,:)]; %check the dimensionality of this thing.
-end
+snorm = diag(sqrt(data_rot_train'*data_rot_train));
+data_rot_train = data_rot_train/diag(snorm);
+data_rot_test = data_rot_test/diag(snorm);
+data_rot_valid = data_rot_valid/diag(snorm);
 
-display('    extracting testing set principle components...');
-for i = 1:numPCA
-    fprintf('        %i PC extracted \n', i);
-    PCATestData = [PCATestData; data_rot_test(i,:)]; %check the dimensionality of this thing.
-end
-
-display('    extracting validation set principle components...');
-for i = 1:numPCA
-    fprintf('        %i PC extracted \n', i);
-    PCAValidData = [PCAValidData; data_rot_valid(i,:)]; %check the dimensionality of this thing.
-end
-
-%}
+fprintf('     extracting principal components...')
+PCATrainData = data_rot_train(:,1:numPCA);
+PCAValidData = data_rot_valid(:,1:numPCA);
+PCATestData = data_rot_test(:,1:numPCA);
 
 
 
+%{
 dataAll = [dataAllTrain,dataAllTest];
 pcaDat = pca(dataAll)';
 
-comp = 50;
+comp = 10;
 
-PCATrainData = pcaDat(1:comp,1:numImagesTrain);
-PCATestData = pcaDat(1:comp,numImagesTrain+1:numImagesTrain+numImagesTest);
-PCAValidData = PCATrainData;
+PCATrainData_matlab = pcaDat(1:comp,1:numImagesTrain);
+PCATestData_matlab = pcaDat(1:comp,numImagesTrain+1:numImagesTrain+numImagesTest);
+PCAValidData_matlab = PCATrainData;
 
+%}
+
+PCATrainData = PCATrainData';
+PCATestData = PCATestData';
+PCAValidData = PCAValidData';
 
 fprintf('    PCA extraction complete. \n');
 
